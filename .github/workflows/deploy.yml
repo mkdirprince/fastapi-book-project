@@ -41,5 +41,8 @@ jobs:
             # Pull latest code from github
             git pull origin main
 
+            # Stop and remove existing containers before rebuilding
+            sudo docker-compose down
+
             # Deploy app
             sudo docker-compose up -d --build
