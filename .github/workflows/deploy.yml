@@ -41,7 +41,7 @@ jobs:
             docker-compose --version
 
             # Navigate to directory
-            cd /home/ubuntu
+            cd /home/ubuntu/fastapi-book-project
 
             # Pull latest lates code from github
             git pull origin main
