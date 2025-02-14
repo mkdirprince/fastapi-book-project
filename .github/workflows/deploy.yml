@@ -1,39 +1,34 @@
 name: deploy
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.EC2_HOST}}
+          host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{secrets.SSH_KEY}}
-          scripts: |
+          key: ${{ secrets.SSH_KEY }}
+          script: |
             # update system
             sudo apt-get update -y
 
             # Install docker
-            sudo apt  install docker.io
 
+            sudo apt install docker.io -y
             sudo usermod -aG docker ubuntu
-
 
             # Start Docker service
             sudo systemctl start docker
             sudo systemctl enable docker
 
             # Install Docker compose
-            sudo apt  install docker-compose
-
+            sudo apt install docker-compose -y
             sudo chmod +x /usr/local/bin/docker-compose
 
             # Verify installations
@@ -43,8 +38,8 @@ jobs:
             # Navigate to directory
             cd /home/ubuntu/fastapi-book-project
 
-            # Pull latest lates code from github
+            # Pull latest code from github
             git pull origin main
 
-            #Deploy app
+            # Deploy app
             sudo docker-compose up -d --build
